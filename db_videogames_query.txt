@@ -104,3 +104,52 @@ SELECT AVG(rating) AS 'avg_rating' , videogame_id
 FROM reviews
 GROUP BY videogame_id
 ORDER BY avg_rating DESC;
+
+
+//QUERY CON JOIN
+
+1)
+SELECT DISTINCT players.*
+FROM reviews
+INNER JOIN players
+ON reviews.player_id = players.id;
+
+2)
+SELECT COUNT(*) AS 'tournaments_number',videogames.name AS 'videogame_name'
+FROM videogames
+INNER JOIN tournament_videogame
+ON videogames.id = tournament_videogame.videogame_id
+INNER JOIN tournaments
+ON tournaments.id = tournament_videogame.tournament_id
+WHERE tournaments.year = 2016
+GROUP BY videogames.name;
+
+
+3)
+SELECT videogames.id,videogames.name,videogames.overview,videogames.release_date,categories.name AS 'category_name'
+FROM categories
+INNER JOIN category_videogame
+ON categories.id = category_videogame.category_id
+INNER JOIN videogames
+ON videogames.id = category_videogame.videogame_id
+ORDER BY videogames.id;
+
+
+4)
+SELECT DISTINCT software_houses.*
+FROM videogames
+INNER JOIN software_houses
+ON videogames.software_house_id = software_houses.id
+WHERE DATEPART(year,videogames.release_date) >= 2020;
+
+
+5)
+SELECT awards.*, software_houses.name , award_videogame.year
+FROM awards
+INNER JOIN award_videogame
+ON award_videogame.award_id = awards.id
+INNER JOIN videogames
+ON award_videogame.videogame_id = videogames.id
+INNER JOIN software_houses
+ON software_houses.id = videogames.software_house_id
+ORDER BY award_videogame.year;
